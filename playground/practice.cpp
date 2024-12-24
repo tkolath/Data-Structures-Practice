@@ -1,60 +1,33 @@
-//reverse linked list with stack
+//stack_balanced_parentheses
 #include <iostream>
 #include <stack>
+#include <string>
 
-struct Node {
-    int data; 
-    Node* next;
-};
-Node* head; 
+bool are_pair (char opening, char closing) {
+    if (opening == '(' && closing == ')' || opening == '{' && closing == '}'|| opening == '[' && closing == ']') return true;
+    return false;
+}
 
-void insert(int data) {
-    Node* temp1 = new Node(); 
-    temp1 -> data = data; 
-    temp1 -> next = nullptr; 
-    if (head == nullptr) {
-        temp1 -> next = head; 
-        head = temp1;
-        return; 
+bool has_balanced_parenthesis(std::string exp) {
+    std::stack <char> s;
+    for (size_t i{}; i < exp.length(); i++) {
+        if (exp[i] == '(' || exp[i] == '{' || exp[i] == '[') s.push(exp[i]);
+        else if (exp[i] == ')' || exp[i] == '}' || exp[i] == ']') {
+            if (s.empty() || !are_pair(s.top(), exp[i])) return false;
+            else s.pop();
+        }
     }
-    Node* temp2 = head; 
-    while (temp2 -> next != nullptr) {
-        temp2 = temp2 -> next; 
-    }
-    temp2 -> next = temp1; 
-}
-void print() {
-    Node* temp1 = head; 
-    while (temp1 != nullptr) {
-        std::cout << temp1 -> data << " ";
-        temp1 = temp1 -> next; 
-    }
-    std::cout << std::endl; 
-}
-void reverse() { 
-    if (head == nullptr) return; 
-    Node* temp1 = head; 
-    std::stack<Node*> s; 
-    while (temp1 != nullptr) {
-        s.push(temp1);
-        temp1 = temp1 -> next; 
-    }
-    temp1 = s.top(); 
-    head = temp1; 
-    s.pop(); 
-    while (!s.empty()) {
-        temp1 -> next = s.top(); 
-        temp1 = temp1 -> next; 
-        s.pop(); 
-    }
-    temp1 -> next = nullptr;
+    return s.empty() ? true:false;
 }
 
 int main() {
-    insert(5);
-    insert(6);
-    insert(8);
-    print(); 
-    reverse(); 
-    print(); 
+    std::string expression; 
+    std::cout << "Enter the Expression";
+    std::cin >> expression;
+    if(has_balanced_parenthesis(expression))  {
+        std::cout << "Balanced\n";
+    }
+    else {
+        std::cout << "Not Balanced\n" << std::endl;
+    }
 }

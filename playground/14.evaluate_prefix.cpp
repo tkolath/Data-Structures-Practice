@@ -26,24 +26,26 @@ int PerformOperation(char operation, int operand1, int operand2)
 }
 
 
-int EvaluatePostfix(std::string expression)
+int EvaluatePrefix(std::string expression)
 {
 	std::stack<int> S;
-	for(int i = 0;i< expression.length();i++) {
-		if(expression[i] == ' ' || expression[i] == ',') continue; 
+
+	for(int i = expression.length() -1 ;i >= 0;i--) {
+		if(expression[i] == ' ' || expression[i] == ',') continue;
 		else if(IsOperator(expression[i])) {
-			int operand2 = S.top(); S.pop();
 			int operand1 = S.top(); S.pop();
+            int operand2 = S.top(); S.pop();
 			int result = PerformOperation(expression[i], operand1, operand2);
 			S.push(result);
 		}
 		else if(IsNumericDigit(expression[i])){
-			int operand = 0;
-			while(i<expression.length() && IsNumericDigit(expression[i])) {
-				operand = (operand*10) + (expression[i] - '0'); 
-				i++;
+			int operand = 0; int multiplier = 1;
+			while(i>= 0 && IsNumericDigit(expression[i])) {
+				operand = multiplier * (expression[i] - '0') + operand; 
+                multiplier = multiplier * 10;
+				i--;
 			}
-			i--;
+			i++;
 			S.push(operand);
 		}
 	}
@@ -53,11 +55,11 @@ int EvaluatePostfix(std::string expression)
 int main() 
 {
 	std::string expression; 
-	std::cout<<"Enter Postfix Expression \n";
+	std::cout<<"Enter Prefix Expression \n";
 	std::getline(std::cin,expression);
-	int result = EvaluatePostfix(expression);
+	int result = EvaluatePrefix(expression);
 	std::cout<<"Output = "<<result<<"\n";
 }
 
 //test
-//2 3 * 5 4 * + 9 -
+//- + * 2 3 * 5 4 9

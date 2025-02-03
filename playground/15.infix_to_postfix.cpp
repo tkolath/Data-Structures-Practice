@@ -2,7 +2,6 @@
 #include <stack>
 #include <string>
 
-
 bool is_operator(char c) {
     if (c == '+' || c == '-' || c == '*' || c == '/' || c == '$') return true; 
     return false; 

@@ -3,7 +3,7 @@
 
 struct Node {
 	int data;
-	struct Node* next;
+	Node* next;
 };
 
 Node* front = nullptr;
@@ -38,7 +38,7 @@ void Dequeue() {
 }
 
 int Front() {
-	if(front == NULL) {
+	if(front == nullptr) {
 		printf("Queue is empty\n");
 		return;
 	}
@@ -47,7 +47,7 @@ int Front() {
 
 void Print() {
 	Node* temp = front;
-	while(temp != NULL) {
+	while(temp != nullptr) {
 		std::cout << temp->data << " ";
 		temp = temp->next;
 	}

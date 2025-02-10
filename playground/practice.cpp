@@ -1,86 +1,72 @@
-//queue array
+//queue linked list
 #include <iostream>
-#define MAX_SIZE 3
-class queue {
-private:
-    int rear, front;
-    int A[MAX_SIZE];
 
-public:
-    queue() {
-        rear = front = -1;
-    }
-
-    bool is_empty()
-    {
-        return (rear == -1 && front == -1);
-    }
-
-    bool is_full()
-    {
-        return (rear + 1) % MAX_SIZE == front;
-    }
-
-    bool enqueue(int x) {
-        std::cout << "Queueing: " << x << std::endl;
-        if (is_full())
-        {
-            std::cout << "Queue Max Size Reached" << std::endl; 
-            return false;
-        }
-        if (is_empty())
-        {
-            front = rear = 0;
-        }
-        else
-        {
-            rear = (rear + 1) % MAX_SIZE;
-        }
-        A[rear] = x;
-        return true; 
-    }
-
-    bool dequeue()
-    {
-        std::cout << "Dequeuing..." << std::endl; 
-        if (is_empty())
-        {
-            std::cout << "Error: Cannot Dequeue Empty Queue\n";
-            return false;
-        }
-        front = (front + 1) % MAX_SIZE;
-        return true;
-    }
-
-    int Front()
-    {
-        if (is_empty()) 
-        {
-            std::cout << "Cannot return front of empty queue\n";
-            return -1; 
-        }
-        return A[front];
-    }
-    
-    void print()
-    {
-        std::cout << "Current Queue: ";
-        int count = (rear + MAX_SIZE - front) % MAX_SIZE + 1;
-        for (int i = 0; i < count; i++)
-        {
-            int index = (front + i) % MAX_SIZE;
-            std::cout << A[index] << " ";
-        } 
-        std::cout << std::endl; 
-    }
+struct Node {
+    int data;
+    Node* next; 
 };
 
-int main()
+Node* front = nullptr;
+Node* rear = nullptr; 
+
+void Enqueue(int x) {
+    Node* temp1 = new Node(); 
+    temp1 -> data = x;
+    temp1 -> next = nullptr;
+    if (front == nullptr && rear == nullptr)
+    {
+        front = rear = temp1; 
+        return; 
+    }
+    rear -> next = temp1; 
+    rear = temp1; 
+}
+
+void Dequeue()
 {
-    queue q; 
-    q.enqueue(5); q.print(); 
-    q.enqueue(1); q.print(); 
-    q.enqueue(8); q.print(); 
-    std::cout << "Is full : " << std::boolalpha << q.is_full() << std::endl; 
-    q.dequeue(); q.print(); 
+    Node* temp1 = front; 
+    if (front == nullptr)
+    {
+        std::cout << "Error: Empty Queue\n";
+        return;
+    }
+    if (front == rear)
+    {
+        front = rear = nullptr; 
+    }
+    else
+    {
+        front = front -> next; 
+    }
+    delete temp1; 
+    temp1 = nullptr; 
+}
+
+int Front()
+{
+    if (front == nullptr)
+    {
+        std::cout << "Empty Queue\n" << std::endl;
+        return -1;
+    }
+    return front -> data; 
+}
+
+
+void Print() 
+{
+    Node* temp1 = front;
+    while (temp1 != nullptr)
+    {
+        std::cout << temp1 -> data << " ";
+        temp1 = temp1 -> next;
+    }
+    std::cout << std::endl;
+}
+int main(){
+	Enqueue(2); Print(); 
+	Enqueue(4); Print();
+	Enqueue(6); Print();
+	Dequeue();  Print();
+	Enqueue(8); Print();
 }

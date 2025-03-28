@@ -62,11 +62,13 @@ Node* Delete(Node* root, int data) {
             Node* temp1 = root; 
             root = root -> right; 
             delete temp1;
+            temp1 = nullptr; 
         }
         else if(root -> right == nullptr) {
             Node* temp1 = root;
             root = root -> left; 
             delete temp1;
+            temp1 = nullptr; 
         }
         //case 3: two children
         else {

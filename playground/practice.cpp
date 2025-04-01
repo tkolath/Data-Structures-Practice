@@ -1,4 +1,4 @@
-//delete node from bst
+//delete node from BST
 #include <iostream>
 
 struct Node {
@@ -16,25 +16,17 @@ Node* GetNewNode(int data) {
     return temp1; 
 }
 
-Node* Insert(Node* root, int data) {
+Node* Insert(Node* root, int data){
     if (root == nullptr) {
-        root = GetNewNode(data);       
+        root = GetNewNode(data);
     }
     else if (data <= root -> data) {
         root -> left = Insert(root -> left, data);
     }
-    else {
+    else if (data > root -> data) {
         root -> right = Insert(root -> right, data);
     }
     return root;
-}
-
-void InOrderTraversal(Node* root) {
-    if (root) {
-        InOrderTraversal(root->left);
-        std::cout << root -> data << " ";
-        InOrderTraversal(root->right);
-    }
 }
 
 Node* FindMin(Node* root) {
@@ -42,13 +34,13 @@ Node* FindMin(Node* root) {
         return root; 
     }
     while (root -> left != nullptr) {
-        root = root -> left;
+        root = root -> left; 
     }
     return root; 
 }
 
 Node* Delete(Node* root, int data) {
-    if (root == nullptr) return root;
+    if (root == nullptr) return root; 
     else if (data < root -> data) root -> left = Delete(root -> left, data);
     else if (data > root -> data) root -> right = Delete(root -> right, data);
     else {
@@ -57,39 +49,41 @@ Node* Delete(Node* root, int data) {
             root = nullptr; 
         }
         else if (root -> left == nullptr) {
-            Node* temp1 = root;
+            Node* temp1 = root; 
             root = root -> right; 
-            delete temp1;
+            delete temp1; 
+            temp1 = nullptr; 
         }
         else if (root -> right == nullptr) {
             Node* temp1 = root; 
             root = root -> left; 
             delete temp1; 
+            temp1 = nullptr; 
         }
         else {
-            Node* temp1 = FindMin(root -> right); 
-            root -> data = temp1 -> data;
-            root -> right = Delete(root -> right, temp1-> data);
+            Node* temp1 = FindMin(root -> right);
+            root -> data = temp1 -> data; 
+            root -> right = Delete(root -> right, data);
         }
+        
     }
     return root; 
+}
 
+void InOrderTraversal(Node* root) {
+    if (root) {
+        InOrderTraversal(root-> left);
+        std::cout << root -> data << " "; 
+        InOrderTraversal(root -> right);
+    }
 }
 
 int main() {
+    root = Insert(root, 2);
     root = Insert(root, 5);
-    root = Insert(root, 1);
-    root = Insert(root, 8);
-    root = Insert(root, 3);
-    root = Insert(root, 7);
-    root = Insert(root, 8);
-    root = Insert(root, 3);
-    root = Insert(root, 3);
     root = Insert(root, 6);
-    root = Insert(root, 4);
-    InOrderTraversal(root);
-    Delete(root, 6);
-    std::cout << std::endl; 
-    InOrderTraversal(root);
-
+    root = Insert(root, 8);
+    InOrderTraversal(root); std::cout << std::endl; 
+    root = Delete(root, 5);
+    InOrderTraversal(root); std::cout << std::endl; 
 }

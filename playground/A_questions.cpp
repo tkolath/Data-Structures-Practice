@@ -103,7 +103,7 @@ int main() {
     ReverseIteratively(); 
     std::cout << "Iteratively Reversed Linked List: "; Print(); 
     ReverseRecursively(head);
-    std::cout << "Iteratively Reversed Linked List: "; Print(); 
+    std::cout << "Recursively Reversed Linked List: "; Print(); 
     std::cout << "Recursive Print: "; RecursivePrint(head); std::cout << "\n";
     std::cout << "Reverse Recursive Print: "; ReverseRecursivePrint(head); std::cout << "\n";
     InsertHeadDoublyLinked(1);

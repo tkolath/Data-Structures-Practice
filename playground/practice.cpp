@@ -1,95 +1,213 @@
-//Delete Node from BST
 #include <iostream>
 
+//Implement a Linked List and Declare Head
 struct Node {
     int data; 
-    Node* left; 
-    Node* right; 
+    Node* next;
 };
 
-Node* root = nullptr; 
+Node* head = nullptr; 
 
-Node* GetNewNode(int data) {
-    Node* temp1 = new Node();
+//Print Linked List
+void Print() {
+    Node* temp1 = head; 
+    while (temp1 != nullptr) {
+        std::cout << temp1 -> data << " ";
+        temp1 = temp1 -> next; 
+    }
+    std::cout << std::endl; 
+}
+//Insert at the Begining
+void InsertHead(int data) {
+    Node* temp1 = new Node(); 
     temp1 -> data = data; 
-    temp1 -> left = temp1 -> right = nullptr; 
+    temp1 -> next = head;
+    head = temp1; 
+}
+
+//Insert at Tail
+void InsertTail(int data) {
+    Node* temp1 = head; 
+    while (temp1 -> next != nullptr) {
+        temp1 = temp1 -> next; 
+    }
+    Node* temp2 = new Node(); 
+    temp2 -> data = data;
+    temp1 -> next = temp2; 
+}
+
+//Insert at the n-th Node
+void InsertNthNode(int data, int n) {
+    Node* temp1 = new Node(); 
+    temp1 -> data = data; 
+    if (n==1) {
+        temp1 -> next = head; 
+        head = temp1; 
+        return;
+    }
+    Node* temp2 = head; 
+    for (size_t i{}; i < n-2; i++) {
+        temp2 = temp2 -> next; 
+    }
+    temp1 -> next = temp2 -> next; 
+    temp2 -> next = temp1;
+}
+
+//Delete the n-th Node
+void DeleteNthNode(int n) {
+    Node* temp1 = head; 
+    if (n==1) {
+        head = temp1 -> next; 
+        delete temp1; 
+        temp1 = nullptr; 
+        return; 
+    }
+    for (size_t i{}; i < n-2; i++) {
+        temp1 = temp1 -> next; 
+    }
+    Node* temp2 = temp1 -> next; 
+    temp1 -> next = temp2 -> next; 
+    delete temp2; 
+    temp2 = nullptr; 
+}
+
+//Reverse Iteratively
+void ReverseIteratively() {
+    Node* current = head;
+    Node* prev = nullptr; 
+    Node* next = nullptr; 
+    while (current != nullptr) {
+        next = current -> next; 
+        current -> next = prev; 
+        prev = current;
+        current = next; 
+    }
+    head = prev; 
+}
+
+//Reverse List Recursively
+void ReverseRecursively(Node* temp1) {
+    if (temp1 -> next == nullptr){
+        head = temp1; 
+        return; 
+    }
+    ReverseRecursively(temp1 -> next);
+    temp1 -> next -> next = temp1; 
+    temp1 -> next = nullptr; 
+}
+
+//Recursive Print
+void RecursivePrint(Node* temp1) {
+    if(temp1 == nullptr) {
+        return; 
+    }
+    std::cout << temp1 -> data << " ";
+    RecursivePrint(temp1 -> next);
+}
+
+//Reverse Recursive Print
+void ReverseRecursivePrint(Node* temp1) {
+    if (temp1 == nullptr) {
+        return; 
+    }
+    ReverseRecursivePrint(temp1 -> next);
+    std::cout << temp1 -> data << " ";
+}
+
+//Implement Doubly Linked List and Declare head
+struct Node2 {
+    int data;
+    Node2* prev; 
+    Node2* next; 
+};
+
+Node2* head2 = nullptr; 
+
+//GetNewNode
+Node2* GetNewNode(int data) {
+    Node2* temp1 = new Node2(); 
+    temp1 -> data = data; 
+    temp1 -> prev = temp1 -> next = nullptr; 
     return temp1; 
 }
 
-Node* Insert(Node* root, int data) {
-    if (root == nullptr) {
-        root = GetNewNode(data);
+//Insert at Head of Doubly Linked List
+void InsertHeadDoublyLinked(int data) {
+    Node2* temp1 = GetNewNode(data);
+    if (head2 == nullptr) {
+        head2 = temp1; 
+        return; 
     }
-    else if (data <= root -> data) {
-        root -> left = Insert(root -> left, data);
-    }
-    else if (data > root -> data) {
-        root -> right = Insert(root -> right, data);
-    }
-    return root; 
+    temp1 -> next = head2;
+    head2 -> prev = temp1; 
+    head2 = temp1; 
 }
 
-void InOrderTraversal(Node* root) {
-    if (root) {
-        InOrderTraversal(root -> left);
-        std::cout << root -> data << " ";
-        InOrderTraversal(root -> right);
+//Insert at Tail of Doubly Linked List
+void InsertTailDoublyLinked(int data) {
+    Node2* temp1 = head2; 
+    while (temp1 -> next != nullptr) {
+        temp1 = temp1 -> next; 
     }
+    Node2* temp2 = GetNewNode(data);
+    temp1 -> next = temp2; 
+    temp2 -> prev = temp1; 
 }
 
-Node* FindMin(Node* root) {
-    if (root == nullptr) {
-        return root;
+//Print Doubly Linked List Forward
+void PrintForwardDoublyLinked() {
+    Node2* temp1 = head2; 
+    while (temp1 != nullptr) {
+        std::cout << temp1 -> data << " ";
+        temp1 = temp1 -> next;
     }
-    while (root -> left != nullptr) {
-        root = root -> left; 
-    }
-    return root; 
+    std::cout << std::endl; 
 }
 
-
-Node* Delete(Node* root, int data) {
-    if (root == nullptr) {
-        return root;
+//Print Doubly Linked List Backward
+void PrintBackwardDoublyLinked() {
+    Node2* temp1 = head2; 
+    while (temp1 -> next != nullptr) {
+        temp1 = temp1 -> next; 
     }
-    else if (data < root -> data) {
-        root -> left = Delete(root -> left, data);
+    while (temp1 != nullptr) {
+        std::cout << temp1 -> data << " ";
+        temp1 = temp1 -> prev;
     }
-    else if (data > root -> data) {
-        root -> right = Delete(root -> right, data);
-    }
-    else {
-        if (root -> left == nullptr && root -> right == nullptr) {
-            delete root;
-            root = nullptr; 
-        }
-        else if (root -> left == nullptr) {
-            Node* temp1 = root;
-            root = root -> right; 
-            delete temp1; 
-            temp1 = nullptr; 
-        }
-        else if (root -> right == nullptr) {
-            Node* temp1 = root; 
-            root = root -> left; 
-            delete temp1; 
-            temp1 = nullptr; 
-        }
-        else { 
-            Node* temp1 = FindMin(root -> right);
-            root -> data = temp1 -> data; 
-            root -> right = Delete(root -> right, temp1 -> data);
-        }
-    }
-    return root; 
+    std::cout << std::endl; 
 }
+
 
 int main() {
-    root = Insert(root, 5);
-    root = Insert(root, 9);
-    root = Insert(root, 4);
-    InOrderTraversal(root); 
-    root = Delete(root, 4); std::cout << std::endl; 
-    InOrderTraversal(root); 
-
+    InsertHead(5);
+    InsertHead(1);
+    InsertHead(8);
+    std::cout << "Head Insertions: "; Print(); 
+    InsertTail(3);
+    InsertTail(7);
+    InsertTail(8);
+    std::cout << "Tail Insertions: "; Print();
+    InsertNthNode(9,1);
+    InsertNthNode(5,3);
+    InsertNthNode(2,5);
+    std::cout << "n-th Node Insertions: "; Print(); 
+    DeleteNthNode(3);
+    std::cout << "Deleted n-th Node: "; Print();
+    ReverseIteratively(); 
+    std::cout << "Iteratively Reversed Linked List: "; Print(); 
+    ReverseRecursively(head);
+    std::cout << "Recursively Reversed Linked List: "; Print(); 
+    std::cout << "Recursive Print: "; RecursivePrint(head); std::cout << "\n";
+    std::cout << "Reverse Recursive Print: "; ReverseRecursivePrint(head); std::cout << "\n";
+    InsertHeadDoublyLinked(1);
+    InsertHeadDoublyLinked(7);
+    InsertHeadDoublyLinked(3);
+    InsertHeadDoublyLinked(8);
+    std::cout << "Doubly Linked List Head Insertion: "; PrintForwardDoublyLinked();
+    InsertTailDoublyLinked(1);
+    InsertTailDoublyLinked(8);
+    InsertTailDoublyLinked(2);
+    InsertTailDoublyLinked(4);
+    std::cout << "Doubly Linked List Tail Insertion: "; PrintForwardDoublyLinked();
+    std::cout << "Doubly Linked List Print Backwards: "; PrintBackwardDoublyLinked();
 }
